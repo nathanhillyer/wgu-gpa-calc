@@ -50,27 +50,44 @@ namespace wgu_gpa_calc
         private const int GAC1minScore = 73;
         private const int GAC1maxScore = 100;
 
+        private const int CRV1minScore = 720;
+        private const int CRV1maxScore = 900;
+
+        private const int DEV1minScore = 70;
+        private const int DEV1maxScore = 100;
+
+        private const int CTV1minScore = 750;
+        private const int CTV1maxScore = 900;
+
+        private const int DJV1minScore = 70;
+        private const int DJV1maxScore = 100;
+
+        private const int BOV1minScore = 41;
+        private const int BOV1maxScore = 55;
+
+        private const int BNC1minScore = 51;
+        private const int BNC1maxScore = 100;
+
+        private const int CWV1minScore = 70;
+        private const int CWV1maxScore = 100;
+
+        private const int CVV1minScore = 70;
+        private const int CVV1maxScore = 100;
+
+        private const int MGC1minScore = 52;
+        private const int MGC1maxScore = 100;
+
+        private const int CJV1minScore = 42;
+        private const int CJV1maxScore = 50;
+
+        private const int TPV1minScore = 710;
+        private const int TPV1maxScore = 900;
+
         private ArrayList gpas = new ArrayList();
 
         public wgugpacalc()
         {
             InitializeComponent();
-            var txtDelegate = new EventHandler(txt_TextChanged);
-            foreach (var ctrl in this.Controls)
-            {
-                var txtBox = ctrl as TextBox;
-                if (txtBox != null && txtBox.Name != "txtGPA")
-                    txtBox.TextChanged += txtDelegate;
-            }
-
-            var chkDelegate = new EventHandler(chk_CheckChanged);
-            foreach (var ctrl in this.Controls)
-            {
-                var chkBox = ctrl as CheckBox;
-                if (chkBox != null)
-                    chkBox.CheckedChanged += chkDelegate;
-            }
-
             scoresDict.Add("WFV1minScore", WFV1minScore);
             scoresDict.Add("WFV1maxScore", WFV1maxScore);
 
@@ -103,42 +120,43 @@ namespace wgu_gpa_calc
 
             scoresDict.Add("GAC1minScore", GAC1minScore);
             scoresDict.Add("GAC1maxScore", GAC1maxScore);
+
+            scoresDict.Add("CRV1minScore", CRV1minScore);
+            scoresDict.Add("CRV1maxScore", CRV1maxScore);
+
+            scoresDict.Add("DEV1minScore", DEV1minScore);
+            scoresDict.Add("DEV1maxScore", DEV1maxScore);
+
+            scoresDict.Add("CTV1minScore", CTV1minScore);
+            scoresDict.Add("CTV1maxScore", CTV1maxScore);
+
+            scoresDict.Add("DJV1minScore", DJV1minScore);
+            scoresDict.Add("DJV1maxScore", DJV1maxScore);
+
+            scoresDict.Add("BOV1minScore", BOV1minScore);
+            scoresDict.Add("BOV1maxScore", BOV1maxScore);
+
+            scoresDict.Add("BNC1minScore", BNC1minScore);
+            scoresDict.Add("BNC1maxScore", BNC1maxScore);
+
+            scoresDict.Add("CWV1minScore", CWV1minScore);
+            scoresDict.Add("CWV1maxScore", CWV1maxScore);
+
+            scoresDict.Add("CVV1minScore", CVV1minScore);
+            scoresDict.Add("CVV1maxScore", CVV1maxScore);
+
+            scoresDict.Add("MGC1minScore", MGC1minScore);
+            scoresDict.Add("MGC1maxScore", MGC1maxScore);
+
+            scoresDict.Add("CJV1minScore", CJV1minScore);
+            scoresDict.Add("CJV1maxScore", CJV1maxScore);
+
+            scoresDict.Add("TPV1minScore", TPV1minScore);
+            scoresDict.Add("TPV1maxScore", TPV1maxScore);
         }
 
-        private void lnkWFV1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void btnGPA_Click(object sender, EventArgs e)
         {
-            // loads CIW website for description of certification
-            VisitLink("http://www.ciwcertified.com/certifications/web_foundations_series/associate.php", lnkWFV1);
-        }
-
-        // loads a link when label obj is clicked
-        private void VisitLink(String url, LinkLabel lnk)
-        {
-            try
-            {
-                // opens up link in default web browser
-                System.Diagnostics.Process.Start(url);
-                lnk.LinkVisited = true;
-            }
-            catch
-            {
-                // displays error message if link doesn't open
-                MessageBox.Show("Unable to open link from a partial-trust environment (such as a shared drive).");
-            } 
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            gpas = new ArrayList();
-            try
-            {
-                GetScores();
-            }
-            catch
-            {
-                return;
-            }
-
             double finalGPA = 0;
             if (gpas.Count > 0)
             {
@@ -155,46 +173,15 @@ namespace wgu_gpa_calc
             }
         }
 
-        private void txtWFV1_TextChanged(object sender, EventArgs e)
-        {
-            ValidationStart(lblWFV1val, txtWFV1, WFV1minScore, WFV1maxScore);
-        }
-
-        private void ValidationStart(Label lbl, TextBox txt, int min, int max)
+        private void ValidationStart(int min, int max)
         {
             // clear label of previous validation message
-            lbl.Text = "";
+            lblVal.Text = "";
 
             // validates entry if user has entered anything
-            if (txt.Text.Length > 0)
+            if (txtInput.Text.Length > 0)
             {
-                Validate(min, max, lbl, txt);
-            }
-        }
-
-        private void GetScores()
-        {
-            try
-            {
-                GetObjectiveScore(WFV1minScore, WFV1maxScore, txtWFV1, chkWFV1);
-                GetObjectiveScore(AGC1minScore, AGC1maxScore, txtAGC1, chkAGC1);
-                GetObjectiveScore(BBC1minScore, BBC1maxScore, txtBBC1, chkBBC1);
-                GetObjectiveScore(CLC1minScore, CLC1maxScore, txtCLC1, chkCLC1);
-                GetPerformanceScore(cmbLAE1);
-                GetPerformanceScore(cmbLUT1);
-                GetPerformanceScore(cmbQBT1);
-                GetObjectiveScore(AXV1minScore, AXV1maxScore, txtAXV1, chkAXV1);
-                GetObjectiveScore(CPV1minScore, CPV1maxScore, txtCPV1, chkCPV1);
-                GetObjectiveScore(INC1minScore, INC1maxScore, txtINC1, chkINC1);
-                GetPerformanceScore(cmbINT1);
-                GetObjectiveScore(DFV1minScore, DFV1maxScore, txtDFV1, chkDFV1);
-                GetObjectiveScore(CUV1minScore, CUV1maxScore, txtCUV1, chkCUV1);
-                GetObjectiveScore(BVC1minScore, BVC1maxScore, txtBVC1, chkBVC1);
-                GetObjectiveScore(GAC1minScore, GAC1maxScore, txtGAC1, chkGAC1);
-            }
-            catch
-            {
-                throw;
+                Validate(min, max);
             }
         }
 
@@ -220,23 +207,23 @@ namespace wgu_gpa_calc
             }
         }
 
-        private void GetObjectiveScore(int min, int max, TextBox txt, CheckBox chk)
+        private void GetObjectiveScore(int min, int max)
         {
             try
             {
-                if (chk.Checked)
-                {
-                    double percent = GetPercent(min, max, txt);
-                    gpas.Add(PercentToGPA(percent));
-                }
+                double percent = GetPercent(min, max);
+                gpas.Add(PercentToGPA(percent));
+                cmbClass.Items.Remove(cmbClass.Text);
+                txtInput.Text = "";
             }
             catch
             {
-                throw;
+                txtInput.Text = "";
+                return;
             }
         }
 
-        private double GetPercent(int minScore, int maxScore, TextBox txt)
+        private double GetPercent(int minScore, int maxScore)
         {
             int score = 0;
 
@@ -244,14 +231,14 @@ namespace wgu_gpa_calc
             // shows error message if fails
             try
             {
-                score = int.Parse(txt.Text);
+                score = int.Parse(txtInput.Text);
 
                 // subtracts score from the minimum score for gpa calculation
                 score = score - minScore;
             }
             catch
             {
-                MessageBox.Show("Please enter a numeric value for " + txt.Name + ".");
+                MessageBox.Show("Please enter a numeric value for " + cmbClass.Text + ".");
                 throw;
             }
             // calculates how many percentage points to add to the base percentage
@@ -274,103 +261,204 @@ namespace wgu_gpa_calc
             return gpa;
         }
 
-        private void Validate(int minScore, int maxScore, Label lbl, TextBox txt)
+        private void Validate(int minScore, int maxScore)
         {
             // number to be parsed from text box
             int number;
 
             // if parse fails
-            if (!int.TryParse(txt.Text, out number))
+            if (!int.TryParse(txtInput.Text, out number))
             {
                 // validation message will appear
-                lbl.Text = "Please enter a numeric value.";
+                lblVal.Text = "Please enter a numeric value.";
             }
             else
             {
                 if (number < minScore)
                 {
-                    lbl.Text = "Please enter a passing score.";
+                    lblVal.Text = "Please enter a passing score.";
                 }
                 if (number > maxScore)
                 {
-                    lbl.Text = "Please enter a score less than or equal to " + maxScore + ".";
+                    lblVal.Text = "Please enter a score less than or equal to " + maxScore + ".";
                 }
             }
         }
 
-        private void EnableDisable(CheckBox chk, TextBox txt)
+        private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (chk.Checked)
-                txt.Enabled = true;
-            else
-                txt.Enabled = false;
-        }
-
-        private void EnableDisable(CheckBox chk, ComboBox cmb)
-        {
-            if (chk.Checked)
-                cmb.Enabled = true;
-            else
-                cmb.Enabled = false;
-        }
-
-        private void chk_CheckChanged(object sender, EventArgs e)
-        {
-            var chk = sender as CheckBox;
-            String classcode = chk.Name.Substring(3);
-            
-            foreach (var ctrl in this.Controls)
+            if (cmbInput.Visible)
             {
-                if (ctrl is TextBox)
-                {
-                    var txtFound = ctrl as TextBox;
-                    if (txtFound.Name.Equals("txt" + classcode))
-                    {
-                        EnableDisable(chk, txtFound);
-                        break;
-                    }
-                }
-                else if (ctrl is ComboBox)
-                {
-                    var cmbFound = ctrl as ComboBox;
-                    if (cmbFound.Name.Equals("cmb" + classcode))
-                    {
-                        EnableDisable(chk, cmbFound);
-                        break;
-                    }
-                }
+                GetPerformanceScore(cmbInput);
+                cmbClass.Items.Remove(cmbClass.Text);
+                cmbInput.Visible = false;
+                cmbInput.SelectedIndex = -1;
             }
-        }
-
-        private void txt_TextChanged(object sender, EventArgs e)
-        {
-            var txt = sender as TextBox;
-            String classcode = txt.Name.Substring(3);
-            String lbl = "lbl" + classcode;
-            Label lblLookingFor = new Label();
-            foreach (var ctrl in this.Controls)
+            if (txtInput.Visible)
             {
-                if (ctrl is Label)
-                {
-                    Label lblfound = (Label) ctrl;
-                    if (lblfound.Name.Equals("lbl" + classcode + "val"))
-                        lblLookingFor = lblfound;
-                }
+                String course = cmbClass.Text;
+                int min = scoresDict[course + "minScore"];
+                int max = scoresDict[course + "maxScore"];
+                GetObjectiveScore(min, max);
+                txtInput.Visible = false;
             }
-            int minScore = scoresDict[classcode + "minScore"];
-            int maxScore = scoresDict[classcode + "maxScore"];
-
-            ValidationStart(lblLookingFor, (TextBox)sender, minScore, maxScore);
         }
 
-        private void lblAXV1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void cmbClass_SelectedIndexChanged(object sender, EventArgs e)
         {
-            VisitLink("http://certification.comptia.org/Aplus", lblAXV1);
+            txtInput.Visible = false;
+            cmbInput.Visible = false;
+            String course = cmbClass.Text;
+            if (course.Equals("WFV1") || course.Equals("AGC1") || course.Equals("BBC1") ||
+                course.Equals("CLC1") || course.Equals("AXV1") || course.Equals("CPV1") ||
+                course.Equals("INC1") || course.Equals("DFV1") || course.Equals("CUV1") ||
+                course.Equals("BVC1") || course.Equals("GAC1") || course.Equals("DHV1") ||
+                course.Equals("CWV1") || course.Equals("CRV1") || course.Equals("DEV1") ||
+                course.Equals("CTV1") || course.Equals("DJV1") || course.Equals("BOV1") ||
+                course.Equals("BNC1") || course.Equals("CVV1") || course.Equals("MGC1") ||
+                course.Equals("CJV1") || course.Equals("TPV1"))
+            {
+                txtInput.Visible = true;
+            }
+            else
+            {
+                cmbInput.Visible = true;
+            }
+            UpdateStatus(course);
         }
 
-        private void lblCPV1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void UpdateStatus(String course)
         {
-            VisitLink("http://certification.comptia.org/Aplus", lblCPV1);
+            lblStatus.Text = "";
+            switch (course)
+            {
+                case "WFV1":
+                    lblStatus.Text = "Passing score range 54 to 85 :: IT Fundamentals I (CIW Web Foundations Associate 1D0-510)";
+                    break;
+                case "AGC1":
+                    lblStatus.Text = "Passing score range 64 to 100 :: Foundations of College Mathematics";
+                    break;
+                case "BBC1":
+                    lblStatus.Text = "Passing score range 64 to 100 :: Communications Foundations";
+                    break;
+                case "CLC1":
+                    lblStatus.Text = "Passing score range 60 to 100 :: Reasoning and Problem Solving";
+                    break;
+                case "AXV1":
+                    lblStatus.Text = "Passing score range 675 to 900 :: IT Fundamentals II (CompTIA A+ Essentials 220-701)";
+                    break;
+                case "CPV1":
+                    lblStatus.Text = "Passing score range 700 to 900 :: IT Fundamentals III (CompTIA A+ Practical Application 220-702)";
+                    break;
+                case "LAE1":
+                    lblStatus.Text = "Language and Communication: Essay";
+                    break;
+                case "QBT1":
+                    lblStatus.Text = "Language and Communication: Research";
+                    break;
+                case "INC1":
+                    lblStatus.Text = "Passing score range 58 to 100 :: Integrated Natural Sciences";
+                    break;
+                case "LUT1":
+                    lblStatus.Text = "Language and Communication: Presentation";
+                    break;
+                case "INT1":
+                    lblStatus.Text = "Integrated Natural Sciences Applications";
+                    break;
+                case "DFV1":
+                    lblStatus.Text = "Passing score 70 to 100 :: 98-363 Web Developer Fundamentals";
+                    break;
+                case "CUV1":
+                    lblStatus.Text = "Passing score 49 to 70 :: Web Technologies (CIW Web Design Specialist 1D0-520)";
+                    break;
+                case "BVC1":
+                    lblStatus.Text = "Geography";
+                    break;
+                case "GAC1":
+                    lblStatus.Text = "Finite Mathematics";
+                    break;
+                case "HHT1":
+                    lblStatus.Text = "Finite Mathematics Applications";
+                    break;
+                case "DHV1":
+                    lblStatus.Text = "Passing score 70 to 100 :: 98-349 Windows Operating System Fundamentals";
+                    break;
+                case "DIV1":
+                    lblStatus.Text = "Passing score 70 to 100 :: 98-365 Windows Server Administration Fundamentals";
+                    break;
+                case "CWV1":
+                    lblStatus.Text = "Passing score 70 to 100 :: 98-366 Network Fundamentals";
+                    break;
+                case "CRV1":
+                    lblStatus.Text = "Passing score 720 to 900 :: Networks (CompTIA Network+ 2009 N10-004)";
+                    break;
+                case "QLT1":
+                    lblStatus.Text = "Quantitative Literacy: Quantitative Problem Solving and Applications";
+                    break;
+                case "DEV1":
+                    lblStatus.Text = "Passing score 70 to 100 :: 98-367 Security Fundamentals";
+                    break;
+                case "CTV1":
+                    lblStatus.Text = "Passing score 750 to 900 :: CompTIA Security+ 2011 SY0-301, JK0-018)";
+                    break;
+                case "DJV1":
+                    lblStatus.Text = "Passing score 70 to 100 :: 98-361 Software Development Fundamentals";
+                    break;
+                case "BOV1":
+                    lblStatus.Text = "Passing score 41 to 55 :: Web Programming (CIW JavaScript Specialist 1D0-520)";
+                    break;
+                case "BNC1":
+                    lblStatus.Text = "Passing score 51 to 100 :: Organizational Behavior and Leadership";
+                    break;
+                case "IWC1":
+                    lblStatus.Text = "Literature, Arts and the Humanities";
+                    break;
+                case "IWT1":
+                    lblStatus.Text = "Literature, Arts and the Humanities: Analysis and Interpretation";
+                    break;
+                case "KET1":
+                    lblStatus.Text = "Introduction to Programming";
+                    break;
+                case "CVV1":
+                    lblStatus.Text = "Passing score 70 to 100 :: 98-364 Database Fundamentals";
+                    break;
+                case "MGC1":
+                    lblStatus.Text = "Passing score 52 to 100 :: Principles of Management";
+                    break;
+                case "RIT1":
+                    lblStatus.Text = "Leadership Concepts and Applications";
+                    break;
+                case "CJV1":
+                    lblStatus.Text = "Passing score 42 to 50 :: Database I (CIW v5 Database Design Specialist 1D0-541)";
+                    break;
+                case "KFT1":
+                    lblStatus.Text = "Object Oriented Design and Development";
+                    break;
+                case "TPV1":
+                    lblStatus.Text = "Passing score 710 to 900 :: Project Management (CompTIA Project+ 2009 PK0-003)";
+                    break;
+                case "SBT1":
+                    lblStatus.Text = "Technical Writing";
+                    break;
+                case "QZT1":
+                    lblStatus.Text = "IT Capstone Written Project";
+                    break;
+            }
+
         }
+
+        private void wgugpacalc_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtInput_TextChanged(object sender, EventArgs e)
+        {
+            String course = cmbClass.Text;
+            int min = scoresDict[course + "minScore"];
+            int max = scoresDict[course + "maxScore"];
+            ValidationStart(min, max);
+        }
+
     }
 }
