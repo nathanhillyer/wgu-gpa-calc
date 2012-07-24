@@ -5,7 +5,6 @@ wgu-gpa-calc
 
 Introduction
 ------------
-********************************************************************************
 
 This application will calculate your gpa based on the scores from your 
 objective exams (exams that have scores) and performance exams(exams that 
