@@ -440,7 +440,7 @@ namespace wgu_gpa_calc
                 cmbInput.SelectedIndex = -1;
             }
             // checks if objective exam
-            if (txtInput.Visible)
+            else if (txtInput.Visible)
             {
                 // finds the course based on combobox text
                 Course course = FindCourse(cmbClass.Text);
